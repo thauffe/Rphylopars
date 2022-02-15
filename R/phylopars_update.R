@@ -644,6 +644,7 @@ phylopars <- function(trait_data,tree,model="BM",pheno_error,phylo_correlated=TR
           
           rownames(dat) <- trait_data$species
           biased_sigma <- crossprod(apply(dat,2,pic,phy=drop_tree))/(nspecies-REML)
+          biased_sigma <- as.matrix(nearPD(biased_sigma)$mat) # Force positive-definite variance-covariance
           biased_pars <- mat_to_pars(biased_sigma,nvar,as.integer(!phylo_correlated))
           tip_un <- tp(L=X, R=R, Rmat = as.matrix(Rmat),mL=ncol(X), mR=1, pheno_error=pheno_error, edge_vec=edge_vec, 
                        edge_ind=edge_ind,ind_edge=ind_edge, parent_edges = parent_edges,pars=biased_pars, nvar=nvar, 
